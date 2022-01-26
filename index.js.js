@@ -40,8 +40,7 @@ const server = http
 
         fs.writeFile('deportes.json', JSON.stringify(deportesJSON), (err) => {
           if(err) return res.end('No se logra ingresar el nuevo deporte 😢')
-          res.writeHead(200, { 'Content-Type' : 'application/json' })
-          res.end(JSON.stringify(nuevoDeporte))
+          res.end('Registro con exito 😎')
         })
       })
     } 
@@ -70,8 +69,7 @@ const server = http
 
           fs.writeFile('deportes.json', JSON.stringify(deportesJSON), (err) => {
             if(err) return res.end('No se logro cambiar le precio 😢')
-            res.writeHead(200, { 'Content-Type' : 'application/json' })
-            res.end(JSON.stringify(nuevoPrecio))
+            res.end('editado con exito 😎')
           })
 
         }
@@ -80,15 +78,11 @@ const server = http
 
     //4. Crear una ruta DELETE que elimine un deporte basadp en su nombre solicitado desde el cliente
 
-    if(req.url === '/eliminar' && req.method === 'DELETE') {
+    if(req.url.includes('/eliminar') && req.method === 'DELETE') {
 
-      let response = ''
-      req.on('data', (body) => {
-          response += body
-      })
-
-      req.on('end', () => {
-        const { nombre } = JSON.parse(response)
+     
+      
+        const { nombre } = url.parse(req.url, true).query
 
         deportesJSON.deportes = deportes.filter((dep) => dep.nombre !== nombre)
 
@@ -96,7 +90,7 @@ const server = http
           if(err) return res.end('El deporte no se puede eliminar ya que no existe 😢')
           res.end(`El deporte se elimino con exito 😎`)
         }) 
-      })
+      
     }
   })
   server.listen(3000, () => {
