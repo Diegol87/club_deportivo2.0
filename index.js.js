@@ -80,8 +80,6 @@ const server = http
 
     if(req.url.includes('/eliminar') && req.method === 'DELETE') {
 
-     
-      
         const { nombre } = url.parse(req.url, true).query
 
         deportesJSON.deportes = deportes.filter((dep) => dep.nombre !== nombre)
